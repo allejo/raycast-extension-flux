@@ -1,5 +1,6 @@
 import { Form, ActionPanel, Action, showToast, closeMainWindow, Toast } from "@raycast/api";
 import { DisableDuration, disableFluxForDuration } from "./flux-api";
+import { DEFAULT_ERROR_TOAST } from "./constants";
 
 type Values = {
   duration: DisableDuration;
@@ -13,11 +14,7 @@ export default function Command() {
     if (success) {
       await showToast({ title: `f.lux disabled ${values.duration}` });
     } else {
-      await showToast({
-        style: Toast.Style.Failure,
-        title: `Failed to access f.lux`,
-        message: `Make sure f.lux is running.`,
-      });
+      await showToast(DEFAULT_ERROR_TOAST);
     }
   }
 
