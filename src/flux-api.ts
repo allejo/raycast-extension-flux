@@ -2,30 +2,43 @@ import { runAppleScript } from "@raycast/utils";
 
 type TopLevel = "About f.lux" | "f.lux is off" | "Preferences..." | "Quit f.lux";
 type ActionOption = "Disable" | "Color Effects" | "Options";
-export type DisableDuration = "for an hour" | "until sunrise" | "for full-screen apps" | "for current app";
-export type ColorEffect = "Darkroom" | "Movie mode" | "macOS Dark theme at sunset";
-export type OptionsAction =
-  | "Fast transitions"
-  | "Sleep in on weekends"
-  | "Expanded daytime settings"
-  | "Dim on disable"
-  | "Notifications from f.lux website"
-  | "Backwards alarm clock";
+
+export enum DisableDuration {
+  ForAnHour = "for an hour",
+  UntilSunrise = "until sunrise",
+  ForFullScreenApps = "for full-screen apps",
+  ForCurrentApp = "for current app",
+}
+
+export enum ColorEffect {
+  Darkroom = "Darkroom",
+  MovieMode = "Movie mode",
+  DarkThemeAtSunset = "macOS Dark theme at sunset",
+}
+
+export enum OptionsAction {
+  FastTransitions = "Fast transitions",
+  SleepInOnWeekends = "Sleep in on weekends",
+  ExpandedDaytimeSettings = "Expanded daytime settings",
+  DimOnDisable = "Dim on disable",
+  NotificationsFromFluxWebsite = "Notifications from f.lux website",
+  BackwardsAlarmClock = "Backwards alarm clock",
+}
 
 type MenuSpec = TopLevel | ["Options", OptionsAction] | ["Color Effects", ColorEffect] | ["Disable", DisableDuration];
 
-export const OPTS_FAST_TRANSITIONS: MenuSpec = ["Options", "Fast transitions"];
-export const OPTS_SLEEP_IN_ON_WEEKENDS: MenuSpec = ["Options", "Sleep in on weekends"];
-export const OPTS_EXPANDED_DAYTIME_SETTINGS: MenuSpec = ["Options", "Expanded daytime settings"];
-export const OPTS_DIM_ON_DISABLE: MenuSpec = ["Options", "Dim on disable"];
-export const OPTS_NOTIFICATIONS_FROM_FLUX_WEBSITE: MenuSpec = ["Options", "Notifications from f.lux website"];
-export const OPTS_BACKWARDS_ALARM_CLOCK: MenuSpec = ["Options", "Backwards alarm clock"];
-export const COLOR_EFFECT_DARKROOM: MenuSpec = ["Color Effects", "Darkroom"];
-export const COLOR_EFFECT_MOVIE_MODE: MenuSpec = ["Color Effects", "Movie mode"];
-export const COLOR_EFFECT_DARK_THEME_AT_SUNSET: MenuSpec = ["Color Effects", "macOS Dark theme at sunset"];
-export const DISABLE_FOR_AN_HOUR: MenuSpec = ["Disable", "for an hour"];
-export const DISABLE_UNTIL_SUNRISE: MenuSpec = ["Disable", "until sunrise"];
-export const DISABLE_FOR_FULL_SCREEN_APPS: MenuSpec = ["Disable", "for full-screen apps"];
+export const OPTS_FAST_TRANSITIONS: MenuSpec = ["Options", OptionsAction.FastTransitions];
+export const OPTS_SLEEP_IN_ON_WEEKENDS: MenuSpec = ["Options", OptionsAction.SleepInOnWeekends];
+export const OPTS_EXPANDED_DAYTIME_SETTINGS: MenuSpec = ["Options", OptionsAction.ExpandedDaytimeSettings];
+export const OPTS_DIM_ON_DISABLE: MenuSpec = ["Options", OptionsAction.DimOnDisable];
+export const OPTS_NOTIFICATIONS_FROM_FLUX_WEBSITE: MenuSpec = ["Options", OptionsAction.NotificationsFromFluxWebsite];
+export const OPTS_BACKWARDS_ALARM_CLOCK: MenuSpec = ["Options", OptionsAction.BackwardsAlarmClock];
+export const COLOR_EFFECT_DARKROOM: MenuSpec = ["Color Effects", ColorEffect.Darkroom];
+export const COLOR_EFFECT_MOVIE_MODE: MenuSpec = ["Color Effects", ColorEffect.MovieMode];
+export const COLOR_EFFECT_DARK_THEME_AT_SUNSET: MenuSpec = ["Color Effects", ColorEffect.DarkThemeAtSunset];
+export const DISABLE_FOR_AN_HOUR: MenuSpec = ["Disable", DisableDuration.ForAnHour];
+export const DISABLE_UNTIL_SUNRISE: MenuSpec = ["Disable", DisableDuration.UntilSunrise];
+export const DISABLE_FOR_FULL_SCREEN_APPS: MenuSpec = ["Disable", DisableDuration.ForFullScreenApps];
 
 /**
  * Strip quotes from a string

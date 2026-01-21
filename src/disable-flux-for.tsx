@@ -1,4 +1,4 @@
-import { Form, ActionPanel, Action, showToast, closeMainWindow, Toast } from "@raycast/api";
+import { Form, ActionPanel, Action, showToast, closeMainWindow } from "@raycast/api";
 import { DisableDuration, disableFluxForDuration } from "./flux-api";
 import { DEFAULT_ERROR_TOAST } from "./constants";
 
@@ -27,10 +27,10 @@ export default function Command() {
       }
     >
       <Form.Dropdown id="duration" title="Disable f.lux">
-        <Form.Dropdown.Item value="for an hour" title="for an hour" />
-        <Form.Dropdown.Item value="until sunrise" title="until sunrise" />
-        <Form.Dropdown.Item value="for full-screen apps" title="for full-screen apps" />
-        <Form.Dropdown.Item value="for current app" title="for current app" />
+        <Form.Dropdown.Item value={DisableDuration.ForAnHour} title={DisableDuration.ForAnHour} />
+        <Form.Dropdown.Item value={DisableDuration.UntilSunrise} title={DisableDuration.UntilSunrise} />
+        <Form.Dropdown.Item value={DisableDuration.ForFullScreenApps} title={DisableDuration.ForFullScreenApps} />
+        <Form.Dropdown.Item value={DisableDuration.ForCurrentApp} title={DisableDuration.ForCurrentApp} />
       </Form.Dropdown>
     </Form>
   );
