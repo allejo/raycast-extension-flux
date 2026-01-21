@@ -22,13 +22,6 @@
       "mode": "view"
     },
     {
-      "name": "color-effect",
-      "title": "Set F.lux Color Effect",
-      "subtitle": "f.lux",
-      "description": "Configure the color effect used by f.lux.",
-      "mode": "view"
-    },
-    {
       "name": "disable-flux-for-an-hour",
       "title": "Disable F.lux for an Hour",
       "subtitle": "f.lux",
@@ -54,6 +47,20 @@
       "title": "Quit F.lux",
       "subtitle": "f.lux",
       "description": "Quit the f.lux application.",
+      "mode": "no-view"
+    },
+    {
+      "name": "toggle-flux-darkroom",
+      "title": "Toggle F.lux Color Effect to Darkroom",
+      "subtitle": "f.lux",
+      "description": "Quickly set the f.lux color effect to Darkroom.",
+      "mode": "no-view"
+    },
+    {
+      "name": "toggle-flux-movie-mode",
+      "title": "Toggle F.lux Color Effect to Movie Mode",
+      "subtitle": "f.lux",
+      "description": "Quickly set the f.lux color effect to Movie Mode.",
       "mode": "no-view"
     }
   ],

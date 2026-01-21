@@ -14,6 +14,19 @@ export type OptionsAction =
 
 type MenuSpec = TopLevel | ["Options", OptionsAction] | ["Color Effects", ColorEffect] | ["Disable", DisableDuration];
 
+export const OPTS_FAST_TRANSITIONS: MenuSpec = ["Options", "Fast transitions"];
+export const OPTS_SLEEP_IN_ON_WEEKENDS: MenuSpec = ["Options", "Sleep in on weekends"];
+export const OPTS_EXPANDED_DAYTIME_SETTINGS: MenuSpec = ["Options", "Expanded daytime settings"];
+export const OPTS_DIM_ON_DISABLE: MenuSpec = ["Options", "Dim on disable"];
+export const OPTS_NOTIFICATIONS_FROM_FLUX_WEBSITE: MenuSpec = ["Options", "Notifications from f.lux website"];
+export const OPTS_BACKWARDS_ALARM_CLOCK: MenuSpec = ["Options", "Backwards alarm clock"];
+export const COLOR_EFFECT_DARKROOM: MenuSpec = ["Color Effects", "Darkroom"];
+export const COLOR_EFFECT_MOVIE_MODE: MenuSpec = ["Color Effects", "Movie mode"];
+export const COLOR_EFFECT_DARK_THEME_AT_SUNSET: MenuSpec = ["Color Effects", "macOS Dark theme at sunset"];
+export const DISABLE_FOR_AN_HOUR: MenuSpec = ["Disable", "for an hour"];
+export const DISABLE_UNTIL_SUNRISE: MenuSpec = ["Disable", "until sunrise"];
+export const DISABLE_FOR_FULL_SCREEN_APPS: MenuSpec = ["Disable", "for full-screen apps"];
+
 /**
  * Strip quotes from a string
  *
@@ -54,9 +67,9 @@ const scpt_getMenuCheckedHelper = () => `
         repeat with spec in menuSpecs
           try
             if (count of spec) is 1 then
-              set mi to ${nq(scpt_menuHelper("item 1 of spec"))}
+              set mi to ${nq(scpt_menuHelper("(item 1 of spec)"))}
             else
-              set mi to ${nq(scpt_subMenuHelper("item 1 of spec", "item 2 of spec"))}
+              set mi to ${nq(scpt_subMenuHelper("(item 1 of spec)", "(item 2 of spec)"))}
             end if
               
             set markChar to value of attribute "AXMenuItemMarkChar" of mi
@@ -84,6 +97,7 @@ const scpt_getMenuCheckedHelper = () => `
 function scpt_clickTopMenu(action: TopLevel) {
   return scpt_fluxScope(`
     click ${scpt_menuHelper(action)}
+    
     return 0
   `);
 }
@@ -106,37 +120,44 @@ async function as_clickMenu(action: MenuSpec) {
 
 export async function getMenuStates() {
   const menuSpecs: MenuSpec[] = [
-    ["Options", "Fast transitions"],
-    ["Options", "Sleep in on weekends"],
-    ["Options", "Expanded daytime settings"],
-    ["Options", "Dim on disable"],
-    ["Options", "Notifications from f.lux website"],
-    ["Options", "Backwards alarm clock"],
-    ["Color Effects", "Darkroom"],
-    ["Color Effects", "Movie mode"],
-    ["Color Effects", "macOS Dark theme at sunset"],
-    ["Disable", "for an hour"],
-    ["Disable", "until sunrise"],
-    ["Disable", "for full-screen apps"],
+    OPTS_FAST_TRANSITIONS,
+    OPTS_SLEEP_IN_ON_WEEKENDS,
+    OPTS_EXPANDED_DAYTIME_SETTINGS,
+    OPTS_DIM_ON_DISABLE,
+    OPTS_NOTIFICATIONS_FROM_FLUX_WEBSITE,
+    OPTS_BACKWARDS_ALARM_CLOCK,
+    COLOR_EFFECT_DARKROOM,
+    COLOR_EFFECT_MOVIE_MODE,
+    COLOR_EFFECT_DARK_THEME_AT_SUNSET,
+    DISABLE_FOR_AN_HOUR,
+    DISABLE_UNTIL_SUNRISE,
+    DISABLE_FOR_FULL_SCREEN_APPS,
   ];
   const options = new Map<MenuSpec, number>();
-  const states = (
-    await runAppleScript(`
-      ${scpt_getMenuCheckedHelper()}
-      
-      return getMenuCheckedStates({
-         ${menuSpecs.map((menuSpec, index) => {
-           return `{"${Array.isArray(menuSpec) ? menuSpec.join('","') : menuSpec}"}${index < menuSpecs.length - 1 ? "," : ""}`;
-         })}
-      })
-    `)
-  ).split(",");
+  const statesScpt = `
+    ${scpt_getMenuCheckedHelper()}
+
+    return getMenuCheckedStates({ ¬
+      ${menuSpecs
+        .map((menuSpec) => {
+          return `{"${Array.isArray(menuSpec) ? menuSpec.join('","') : menuSpec}"}`;
+        })
+        .join(",")} ¬
+    })
+  `;
+  const states = (await runAppleScript(statesScpt)).split(",");
 
   menuSpecs.forEach((menuSpec, index) => {
     options.set(menuSpec, parseInt(states[index], 10));
   });
 
   return options;
+}
+
+export async function getMenuState(option: MenuSpec): Promise<number> {
+  const options = await getMenuStates();
+
+  return options.get(option) ?? -1;
 }
 
 export async function openPreferences(): Promise<boolean> {
